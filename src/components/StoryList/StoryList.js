@@ -1,4 +1,10 @@
 import React from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 
 class StoryList extends React.Component {
     constructor(props) {
@@ -37,6 +43,7 @@ class StoryList extends React.Component {
         console.log(storyList)
         return (
             <div>
+                <Link to="/scrum_master">Scrum Master</Link>
                 Session Name: 
                 <input
                     type="text"
