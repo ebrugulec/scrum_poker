@@ -2,7 +2,7 @@ import React from "react";
 import {
     Redirect
 } from "react-router-dom";
-
+import { Input } from 'antd';
 import * as firebase from 'firebase'
 import * as routes from '../../constants/routes'
 class StoryList extends React.Component {
@@ -72,13 +72,13 @@ class StoryList extends React.Component {
         }
         return (
             <div>
-                {/* <Link to="/scrum_master">Scrum  Master</Link> */}
                 Session Name: 
-                <input
+                <Input
                     type="text"
                     value={sessionName}
                     onChange={e => this.handleChangeName(e.target.value)}
                 />
+                
                 Number of Voters 
                 <input
                     type="number"
