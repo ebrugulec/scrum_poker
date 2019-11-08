@@ -2,12 +2,16 @@ import React from "react";
 import {
     Redirect
 } from "react-router-dom";
+import FireBaseHelper from '../../Firebase/FirebaseHelper'
 import { Input } from 'antd';
-import * as firebase from 'firebase'
-import * as routes from '../../constants/routes'
-import { Row, Col, Button } from 'antd';
+import * as routes from '../../routes/routes'
+import { Row, Col } from 'antd';
+import Header from '../Layout/Header'
+import ViewButton from '../View/ViewButton'
+
 import './StoryList.scss'
 
+//TODO: Initial Value Add
 const { TextArea } = Input;
 class StoryList extends React.Component {
     constructor(props) {
@@ -34,7 +38,6 @@ class StoryList extends React.Component {
     }
 
     handleChangeStoryList (value) {
-        //TODO: Paste Story List
         const { votersCount } = this.state
         const newStoryList = value.split('\n')
 
@@ -47,7 +50,6 @@ class StoryList extends React.Component {
             return list
         })
 
-        console.log(returnStories)
         this.setState({
             storyValue: value,
             storyList: returnStories
@@ -55,30 +57,28 @@ class StoryList extends React.Component {
     }
 
     startSession = () => {
+        console.log('Start Session')
         const { sessionName, votersCount, storyList, storyValue } = this.state
-
-        firebase.database().ref('scrum/').set({
-            sessionName,
-            votersCount,
-            storyList
-        }).then((data)=>{
-            this.setState({
-                isSaved: true
+        const data = FireBaseHelper.setFirebase('scrum/',
+            {
+                sessionName,
+                votersCount,
+                storyList
             })
-        }).catch((error) => {
-            console.log('error ' , error)
+        this.setState({
+            isSaved: true
         })
     }
     render() {
         const { sessionName, votersCount, storyList, storyValue, isSaved } = this.state
 
         if (isSaved) {
-            return <Redirect to={routes.SCRUM_MASTER}/>;
+            return <Redirect to={routes.SCRUM_MASTER}/>
         }
         return (
             <div className="story-list">
                 <Row>
-                    <h2>Scrum Master</h2>
+                    <Header />
                 </Row>
                 <Row className="story-list__session">
                     <Col span={12}>
@@ -90,7 +90,7 @@ class StoryList extends React.Component {
                         />
                     </Col>
                     <Col span={12}>
-                        <span>Number of Voters: </span> 
+                        <span>Number of Voters: </span>
                         <Input
                             type="number"
                             value={votersCount}
@@ -106,12 +106,12 @@ class StoryList extends React.Component {
                         value={storyValue}
                         onChange={e => this.handleChangeStoryList(e.target.value)}
                     />
-                    <Button
+                    <ViewButton
+                        text="Start Session"
                         className="start-session__button"
+                        type="primary"
                         onClick={this.startSession}
-                        type="primary">
-                        Start Session
-                    </Button>
+                    />
                 </div>
             </div>
         )

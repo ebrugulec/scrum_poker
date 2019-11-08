@@ -4,7 +4,6 @@ import './App.scss';
 import StoryList from '../src/components/StoryList/StoryList'
 import Developer from '../src/components/Developer/Developer'
 import ScrumMaster from '../src/components/ScrumMaster/ScrumMaster'
-import  { FirebaseContext } from './Firebase';
 
 import {
   BrowserRouter,
@@ -12,7 +11,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import * as ROUTES from '../src/constants/routes'
+import * as ROUTES from '../src/routes/routes'
 
 class App extends React.Component {
   componentDidMount () {
@@ -41,7 +40,7 @@ class App extends React.Component {
   // })
   }
   render () {
-   
+
   return (
     <div className='main-wrapper'>
       <BrowserRouter>
@@ -51,7 +50,7 @@ class App extends React.Component {
           <Route exact path={ROUTES.DEVELOPER} component={Developer} />
         </Switch>
       </BrowserRouter>
-      
+
     </div>
   );
   }

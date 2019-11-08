@@ -1,6 +1,8 @@
 import React from "react";
 import * as firebase from 'firebase'
 import { Table, Divider, Tag, Row, Col, Button } from 'antd';
+import Header from '../Layout/Header'
+import ViewButton from '../View/ViewButton'
 import './ScrumMaster.scss'
 
 const STORY_POINTS = [1,2,3,5,8,21,34,55,89,134, '?']
@@ -211,6 +213,7 @@ class ScrumMaster extends React.Component {
         console.log('storyList', storyList)
         return (
             <div className="scrum-master">
+                <Header />
                 <Row>
                     <Col span={8}>
                         <span>
@@ -220,7 +223,8 @@ class ScrumMaster extends React.Component {
                     </Col>
                     <Col span={8}>
                         <div>
-                            {activeStory.story_name}
+                            <span>Active Story: </span>
+                           <span>{activeStory.story_name}</span>
                         </div>
                         <div className="scrum-master__points">
                             {STORY_POINTS.map(point => {
@@ -237,10 +241,20 @@ class ScrumMaster extends React.Component {
                             isStopVoting ?
                             <div>
                                 <input onChange={(e) => this.handleFinalScore(e.target.value)}></input>
-                                <Button type="danger" onClick={this.saveFinalScore}>Save Final Score</Button>
+                                <ViewButton
+                                    text="Save Final Score"
+                                    className=""
+                                    type="danger"
+                                    onClick={this.saveFinalScore}
+                                />
                             </div>
                             :
-                            <Button type="danger" onClick={this.endVoting}>End Voting</Button>
+                            <ViewButton
+                                text="End Voting"
+                                className=""
+                                type="danger"
+                                onClick={this.endVoting}
+                            />
                         }
                     </Col>
                 </Row>
