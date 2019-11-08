@@ -5,6 +5,10 @@ import {
 import { Input } from 'antd';
 import * as firebase from 'firebase'
 import * as routes from '../../constants/routes'
+import { Row, Col, Button } from 'antd';
+import './StoryList.scss'
+
+const { TextArea } = Input;
 class StoryList extends React.Component {
     constructor(props) {
         super(props);
@@ -30,6 +34,7 @@ class StoryList extends React.Component {
     }
 
     handleChangeStoryList (value) {
+        //TODO: Paste Story List
         const { votersCount } = this.state
         const newStoryList = value.split('\n')
 
@@ -71,26 +76,43 @@ class StoryList extends React.Component {
             return <Redirect to={routes.SCRUM_MASTER}/>;
         }
         return (
-            <div>
-                Session Name: 
-                <Input
-                    type="text"
-                    value={sessionName}
-                    onChange={e => this.handleChangeName(e.target.value)}
-                />
-                
-                Number of Voters 
-                <input
-                    type="number"
-                    value={votersCount}
-                    onChange={e => this.handleChangeVoters(e.target.value)}
-                />
-                Story List
-                <textarea
-                    value={storyValue}
-                    onChange={e => this.handleChangeStoryList(e.target.value)}
-                />
-                <button onClick={this.startSession}>Start Session</button>
+            <div className="story-list">
+                <Row>
+                    <h2>Scrum Master</h2>
+                </Row>
+                <Row className="story-list__session">
+                    <Col span={12}>
+                        <span>Session Name: </span>
+                        <Input
+                            type="text"
+                            value={sessionName}
+                            onChange={e => this.handleChangeName(e.target.value)}
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <span>Number of Voters: </span> 
+                        <Input
+                            type="number"
+                            value={votersCount}
+                            onChange={e => this.handleChangeVoters(e.target.value)}
+                            className="voter-counts"
+                        />
+                    </Col>
+                </Row>
+                <div className="list">
+                    <span>Paste your Story List(Each Line will be converted as a story)</span>
+                    <TextArea
+                        rows={14}
+                        value={storyValue}
+                        onChange={e => this.handleChangeStoryList(e.target.value)}
+                    />
+                    <Button
+                        className="start-session__button"
+                        onClick={this.startSession}
+                        type="primary">
+                        Start Session
+                    </Button>
+                </div>
             </div>
         )
     }

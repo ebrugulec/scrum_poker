@@ -1,0 +1,29 @@
+.story-list {
+    display: table;
+    margin: 0 auto;
+    min-width: 900px;
+    margin-top: 50px;
+    
+    .story-list__session {
+        display: flex;
+
+        input {
+            width: 200px;
+        }
+
+        .voter-counts {
+            
+        }
+    }
+    .start-session__button {
+
+    }
+
+    .list {
+        margin: 30px 0 10px 0;
+    }
+
+    .start-session__button {
+        margin-top: 20px;
+    }
+}

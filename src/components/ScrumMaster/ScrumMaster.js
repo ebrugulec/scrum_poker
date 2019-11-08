@@ -1,7 +1,9 @@
 import React from "react";
 import * as firebase from 'firebase'
+import { Table, Divider, Tag, Row, Col, Button } from 'antd';
+import './ScrumMaster.scss'
 
-const STORY_POINTS = [1,2,3,5,8,21,34,55,89,134]
+const STORY_POINTS = [1,2,3,5,8,21,34,55,89,134, '?']
 
 //TODO: Add Initial Values
 class ScrumMaster extends React.Component {
@@ -20,10 +22,6 @@ class ScrumMaster extends React.Component {
             isStopVoting: false,
             finalScore: 1
         }
-    }
-
-    handleChange (event) {
-        console.log(event)
     }
 
     componentDidMount () {
@@ -115,17 +113,24 @@ class ScrumMaster extends React.Component {
 
         if (isShowVote && votes !== []) {
             for (let i = 1; i < votersCount; i++) {
-                voters.push(<div><span>Voter {i}: {votes[i]}</span></div>);
+                voters.push(<div>
+                                <span className="voter-name">Voter {i}: </span>
+                                <span>{votes[i]}</span>
+                            </div>);
             }
             voters.push(<div><span>ScrumMaster: {votes.sc_master}</span></div>)
             
         } else {
             for (let i = 1; i < votersCount; i++) {
-                voters.push(<div><span>Voter {i}: {votes[i] !== undefined ? 'Voted' : 'Not Voted'}</span></div>)
+                voters.push(<div>
+                                <span className="voter-name">Voter {i}: </span>
+                                <span>
+                                    {votes[i] !== undefined ? 'Voted' : 'Not Voted'}
+                                </span>
+                            </div>)
             }
             voters.push(<div><span>ScrumMaster: {votes.sc_master !== undefined ? 'Voted': 'Not Voted'}</span></div>)
         }
-
         return voters
     }
 
@@ -173,36 +178,72 @@ class ScrumMaster extends React.Component {
         this.callFunction()
     }
     render() {
-        const { sessionName, numberVoters, storyList, activeStory, votersCount, infoText, votes, isShowVote, isStopVoting } = this.state
+        const {
+            sessionName,
+            numberVoters,
+            storyList,
+            activeStory,
+            votersCount,
+            infoText,
+            votes,
+            isShowVote,
+            isStopVoting
+        } = this.state
+
+        const columns = [
+            {
+                title: 'Story',
+                dataIndex: 'story_name',
+                key: 'story_name',
+            },
+            {
+                title: 'Story Point',
+                dataIndex: 'story_point',
+                key: 'story_point',
+            },
+            {
+                title: 'Status',
+                dataIndex: 'status',
+                key: 'status',
+            },
+        ]
+        const dataSource = []
+        console.log('storyList', storyList)
         return (
-            <div>
-                {storyList.map((story) => {
-                    return <div>
-                        <div>{story.story_name} - {story.story_point == 0 ? '' : story.story_point} - {story.status}</div>
-                    </div>
-                })}
-----------
-                <div>
-                    {activeStory.story_name}
-                    {STORY_POINTS.map(point => {
-                        return <button onClick={() => this.handleVote(point)}>{point}</button>
-                    })}
-                </div>
-                    Heyyyyyy - {infoText}
-                    -------------
-                <div>
-                    Scrum Master Panel
-                    {this.renderVoters()}
-                </div>
-                {
-                    isStopVoting ?
-                    <div>
-                        <input onChange={(e) => this.handleFinalScore(e.target.value)}></input>
-                        <button onClick={this.saveFinalScore}>Save Final Score</button>
-                    </div>
-                    :
-                    <button onClick={this.endVoting}>End Voting</button>
-                }
+            <div className="scrum-master">
+                <Row>
+                    <Col span={8}>
+                        <span>
+                            Story List
+                        </span>
+                        <Table dataSource={storyList} columns={columns} />
+                    </Col>
+                    <Col span={8}>
+                        <div>
+                            {activeStory.story_name}
+                        </div>
+                        <div className="scrum-master__points">
+                            {STORY_POINTS.map(point => {
+                                return <Button className="point_button" onClick={() => this.handleVote(point)}>{point}</Button>
+                            })}
+                        </div>
+                    </Col>
+                    <Col span={8}>
+                        <div>
+                            Scrum Master Panel
+                            {this.renderVoters()}
+                        </div>
+                        {
+                            isStopVoting ?
+                            <div>
+                                <input onChange={(e) => this.handleFinalScore(e.target.value)}></input>
+                                <Button type="danger" onClick={this.saveFinalScore}>Save Final Score</Button>
+                            </div>
+                            :
+                            <Button type="danger" onClick={this.endVoting}>End Voting</Button>
+                        }
+                    </Col>
+                </Row>
             </div>
         )
     }

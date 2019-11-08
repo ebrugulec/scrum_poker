@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 
 import StoryList from '../src/components/StoryList/StoryList'
 import Developer from '../src/components/Developer/Developer'
@@ -43,7 +43,7 @@ class App extends React.Component {
   render () {
    
   return (
-    <div>
+    <div className='main-wrapper'>
       <BrowserRouter>
         <Switch>
           <Route exact path={ROUTES.POKER_PLANNING} component={StoryList} />
@@ -53,24 +53,6 @@ class App extends React.Component {
       </BrowserRouter>
       
     </div>
-  //   <FirebaseContext.Consumer>
-  //   {firebase => {
-  //     return <div><StoryList firebase={firebase} /></div>;
-  //   }}
-  // </FirebaseContext.Consumer>
-    // <Router>
-    //   <Switch>
-    //     <Route path="/scrum_master">
-    //         <ScrumMaster />
-    //     </Route>
-    //     <Route path="/developer">
-    //         <Developer />
-    //     </Route>
-    //     <Route path="/">
-    //         
-    //     </Route>
-    //     </Switch>
-    // </Router>
   );
   }
 }
