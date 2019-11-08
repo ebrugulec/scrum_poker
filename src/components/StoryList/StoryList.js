@@ -4,7 +4,7 @@ import {
 } from "react-router-dom";
 
 import * as firebase from 'firebase'
-
+import * as routes from '../../constants/routes'
 class StoryList extends React.Component {
     constructor(props) {
         super(props);
@@ -68,7 +68,7 @@ class StoryList extends React.Component {
         const { sessionName, votersCount, storyList, storyValue, isSaved } = this.state
 
         if (isSaved) {
-            return <Redirect to='/scrum_master'/>;
+            return <Redirect to={routes.SCRUM_MASTER}/>;
         }
         return (
             <div>
