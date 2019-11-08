@@ -1,19 +1,19 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-  } from "react-router-dom";
+    Redirect
+} from "react-router-dom";
+
+import * as firebase from 'firebase'
 
 class StoryList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             sessionName: '',
-            numberVoters: 0,
+            votersCount: 1,
             storyList: [],
-            storyValue: ''
+            storyValue: '',
+            isSaved: false
         }
     }
 
@@ -25,25 +25,54 @@ class StoryList extends React.Component {
 
     handleChangeVoters (value) {
         this.setState({
-            numberVoters: value
+            votersCount: value
         })
     }
 
     handleChangeStoryList (value) {
+        const { votersCount } = this.state
+        const newStoryList = value.split('\n')
 
-        let newStoryList = value.split('\n')
+        const returnStories = newStoryList.map((story, i) => {
+            let list = {
+                'story_name': story,
+                'status': i === 0 ? 'Active' : 'Not Voted',
+                'story_point': 0
+            }
+            return list
+        })
 
+        console.log(returnStories)
         this.setState({
             storyValue: value,
-            storyList: newStoryList
+            storyList: returnStories
+        })
+    }
+
+    startSession = () => {
+        const { sessionName, votersCount, storyList, storyValue } = this.state
+
+        firebase.database().ref('scrum/').set({
+            sessionName,
+            votersCount,
+            storyList
+        }).then((data)=>{
+            this.setState({
+                isSaved: true
+            })
+        }).catch((error) => {
+            console.log('error ' , error)
         })
     }
     render() {
-        const { sessionName, numberVoters, storyList, storyValue } = this.state
-        console.log(storyList)
+        const { sessionName, votersCount, storyList, storyValue, isSaved } = this.state
+
+        if (isSaved) {
+            return <Redirect to='/scrum_master'/>;
+        }
         return (
             <div>
-                <Link to="/scrum_master">Scrum Master</Link>
+                {/* <Link to="/scrum_master">Scrum  Master</Link> */}
                 Session Name: 
                 <input
                     type="text"
@@ -53,7 +82,7 @@ class StoryList extends React.Component {
                 Number of Voters 
                 <input
                     type="number"
-                    value={numberVoters}
+                    value={votersCount}
                     onChange={e => this.handleChangeVoters(e.target.value)}
                 />
                 Story List
@@ -61,7 +90,7 @@ class StoryList extends React.Component {
                     value={storyValue}
                     onChange={e => this.handleChangeStoryList(e.target.value)}
                 />
-                <button>Start Session</button>
+                <button onClick={this.startSession}>Start Session</button>
             </div>
         )
     }

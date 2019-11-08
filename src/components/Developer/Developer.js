@@ -17,20 +17,7 @@ class Developer extends React.Component {
         const { sessionName, numberVoters, storyList } = this.state
         return (
             <div>
-                Session Name: 
-                <input
-                    type="text"
-                    value={sessionName}
-                />
-                Number of Voters 
-                <input
-                    type="number"
-                    value={numberVoters}
-                />
-                Story List
-                <textarea
-                    value={storyList}
-                />
+                aa
             </div>
         )
     }

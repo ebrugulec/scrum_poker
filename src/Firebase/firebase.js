@@ -1,4 +1,5 @@
 import app from 'firebase/app';
+import "firebase/firestore";
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -13,8 +14,9 @@ const config = {
 //TODO: Seperate dev and prod configs
 
 class Firebase {
-    constructor() {
-      app.initializeApp(config);
-    }
+  constructor() {
+    app.initializeApp(config);
   }
-  export default Firebase;
+}
+
+export default Firebase;
