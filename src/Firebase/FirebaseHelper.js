@@ -8,6 +8,19 @@ const setFirebase = (path, values) => {
     })
 }
 
+const resetVote = async (path) => {
+    const data = await firebase.database().ref(path).set({})
+    return data
+}
+
+const saveDevVote = (path, values) => {
+    firebase.database().ref('vote/').set({values}).then((data) => {
+        return data
+    }).catch((error)=>{
+        console.log('error ' , error)
+    })
+}
+
 const setVote = (path, value) => {
     firebase.database().ref(path).set({
         sc_master: value
@@ -16,11 +29,6 @@ const setVote = (path, value) => {
     }).catch((error)=>{
         console.log('error ' , error)
     })
-}
-
-const resetVote = async (path) => {
-    const data = await firebase.database().ref(path).set({})
-    return data
 }
 
 const updateScrum = (path, values) => {
@@ -38,7 +46,8 @@ const FirebaseHelper = {
     setFirebase,
     setVote,
     resetVote,
-    updateScrum
+    updateScrum,
+    saveDevVote
 }
 
 export default FirebaseHelper

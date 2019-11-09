@@ -5,6 +5,8 @@ import { Row, Col } from 'antd';
 import Header from '../Layout/Header'
 import { ScrumTableColumns } from '../../constants/ScrumConstants'
 import ActiveStory from '../ScrumMaster/ActiveStory'
+import FirebaseHelper from '../../Firebase/FirebaseHelper'
+import helpers from '../../helpers'
 import './Developer.scss'
 
 //TODO: Add Initial Value
@@ -34,7 +36,6 @@ class Developer extends React.Component {
             storyList: scrum.storyList,
             votersCount: scrum.votersCount
         })
-        console.log('scrum', scrum)
     }
 
     handleVote = async (point) => {
@@ -42,25 +43,32 @@ class Developer extends React.Component {
         const snapshot = await firebase.database().ref('vote/').once('value', (snapshot) => {
             return snapshot
         })
-
-        // firebase.database().ref('votes/').on('value', function(point)
-        // {
-        // 2   = 'a';
-        // });
-        // // this.setState({
-        // //     isShowVote: true,
-        // //     isStopVoting: true,
-        // //     votersCount: vote_count+1
-        // // })
-
-        // console.log('pointt',point )
-
-        const vote_count = Object.keys(snapshot.val()).length
-        if ((votersCount <= vote_count) && vote_count !== undefined) {
-            
+        var vote_count
+        let votes = snapshot.val()
+        if (votes === null) {
+            vote_count = 1
+        } else if (votes.sc_master === undefined && votes !== null) {
+            vote_count = helpers.getVoteCount(votes) + 1
+        } else if (votes.sc_master !== undefined && votes !== null) {
+            vote_count = helpers.getVoteCount(votes)
         } else {
-            alert('Noooo')
+            vote_count = helpers.getVoteCount(votes) + 1
         }
+        if (vote_count < Number(votersCount)) {
+            let newVoter = {
+            [vote_count]: point,
+            ...snapshot.val()
+            }
+            this.saveDevVote(newVoter)
+        }
+    }
+
+    saveDevVote = (newVoter) => {
+        firebase.database().ref('vote/').set(newVoter).then((data) => {
+            return data
+        }).catch((error)=>{
+            console.log('error ' , error)
+        })
     }
 
     getVoters = async () => {
@@ -79,7 +87,7 @@ class Developer extends React.Component {
     }
 
     render() {
-        const { sessionName, numberVoters, storyList, activeStory } = this.state
+        const { sessionName, numberVoters, storyList, activeStory, votersCount } = this.state
         return (
             <div className="developer">
                 <Header />
