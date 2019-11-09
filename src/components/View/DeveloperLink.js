@@ -1,13 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import * as routes from '../../routes/routes'
 
 const DeveloperLink = (props) => {
     return (
-        <Button
-            className={className}
-            onClick={onClick}
-            type={type}>
-            {text}
-        </Button>
+        <div className="developer-link">
+            <Link to={routes.DEVELOPER}>Developer</Link>
+        </div>
     )
 }
 

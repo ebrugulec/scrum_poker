@@ -7,7 +7,8 @@ import Voters from './Voters'
 import ActiveStory from './ActiveStory'
 import FirebaseHelper from '../../Firebase/FirebaseHelper'
 import StoryListTable from '../View/StoryListTable'
-import {ScrumTableColumns} from '../../constants/TableColumns'
+import { ScrumTableColumns } from '../../constants/TableColumns'
+import DeveloperLink from '../View/DeveloperLink'
 import './ScrumMaster.scss'
 
 //TODO: Add Initial Values
@@ -53,7 +54,7 @@ class ScrumMaster extends React.Component {
 
     componentWillUnmount () {
         clearInterval(this.state.intervalId);
-     }
+    }
 
     handleVote = (value) => {
         const data = FirebaseHelper.setVote('vote/', value)
@@ -153,6 +154,7 @@ class ScrumMaster extends React.Component {
         } = this.state
         return (
             <div className="scrum-master">
+                <DeveloperLink />
                 <Header />
                 <Row>
                     <Col span={8}>
