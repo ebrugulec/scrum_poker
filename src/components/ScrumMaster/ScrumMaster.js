@@ -30,10 +30,10 @@ class ScrumMaster extends React.Component {
     }
 
     componentDidMount () {
-        this.callFunction()
+        this.getScrumValues()
     }
 
-    callFunction = async () => {
+    getScrumValues = async () => {
         const snapshot = await firebase.database().ref('scrum/').once('value', (snapshot) => {
             return snapshot
         })
@@ -44,7 +44,6 @@ class ScrumMaster extends React.Component {
         })
 
         var intervalId = setInterval(this.getVotes, 1000);
-        console.log('interval cagirma')
         this.setState({
             storyList: scrum.storyList,
             activeStory: activeStory[0],
@@ -144,7 +143,7 @@ class ScrumMaster extends React.Component {
 
         FirebaseHelper.resetVote('vote/')
 
-        this.callFunction()
+        this.getScrumValues()
     }
     render() {
         const {
