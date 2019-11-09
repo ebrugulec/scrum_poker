@@ -7,7 +7,7 @@ import Voters from './Voters'
 import ActiveStory from './ActiveStory'
 import FirebaseHelper from '../../Firebase/FirebaseHelper'
 import StoryListTable from '../ViewElements/StoryListTable'
-import { ScrumTableColumns } from '../../constants/TableColumns'
+import { ScrumTableColumns } from '../../constants/ScrumConstants'
 import DeveloperLink from '../ViewElements/DeveloperLink'
 import './ScrumMaster.scss'
 

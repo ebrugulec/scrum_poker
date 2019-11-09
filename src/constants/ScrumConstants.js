@@ -15,3 +15,5 @@ export const ScrumTableColumns = [
         key: 'status',
     },
 ]
+
+export const StoryPoints = [1,2,3,5,8,21,34,55,89,134, '?']
