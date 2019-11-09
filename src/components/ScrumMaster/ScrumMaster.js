@@ -135,7 +135,8 @@ class ScrumMaster extends React.Component {
             storyList: newStoryList,
             votersCount: 0,
             votes: [],
-            isStopVoting: false
+            isStopVoting: false,
+            point: null
         })
 
         this.getScrumValues()
@@ -182,6 +183,7 @@ class ScrumMaster extends React.Component {
                             isStopVoting ?
                             <div>
                                 <input onChange={(e) => this.handleFinalScore(e.target.value)}></input>
+                                <br/><br/>
                                 <ViewButton
                                     text="Save Final Score"
                                     className=""
