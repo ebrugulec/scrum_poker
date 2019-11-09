@@ -18,7 +18,8 @@ class Developer extends React.Component {
             numberVoters: 0,
             storyList: [],
             votersCount: 0,
-            activeStory: []
+            activeStory: [],
+            point: null
         }
     }
 
@@ -55,6 +56,9 @@ class Developer extends React.Component {
             vote_count = helpers.getVoteCount(votes) + 1
         }
         if (vote_count < Number(votersCount)) {
+            this.setState({
+                point
+            })
             let newVoter = {
             [vote_count]: point,
             ...snapshot.val()
@@ -87,7 +91,8 @@ class Developer extends React.Component {
     }
 
     render() {
-        const { sessionName, numberVoters, storyList, activeStory, votersCount } = this.state
+        const { sessionName, numberVoters, storyList, activeStory, votersCount, point } = this.state
+        console.log('point', point)
         return (
             <div className="developer">
                 <Header />
@@ -95,10 +100,11 @@ class Developer extends React.Component {
                     <Col span={12}>
                         <StoryListTable storyList={storyList} columns={ScrumTableColumns} />
                     </Col>
-                    <Col span={12}>
+                    <Col span={12} className="active-story">
                         <ActiveStory
                             handleVote={this.handleVote}
                             activeStory={activeStory}
+                            point={point}
                         />
                     </Col>
                 </Row>

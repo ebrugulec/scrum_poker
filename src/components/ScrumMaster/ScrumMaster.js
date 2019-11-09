@@ -26,7 +26,8 @@ class ScrumMaster extends React.Component {
             isShowVote: false,
             votes: [],
             isStopVoting: false,
-            finalScore: 1
+            finalScore: 1,
+            point: null
         }
     }
 
@@ -55,12 +56,12 @@ class ScrumMaster extends React.Component {
         clearInterval(this.state.intervalId);
     }
 
-    handleVote = (value) => {
-        const data = FirebaseHelper.setVote('vote/', value)
+    handleVote = (point) => {
+        const data = FirebaseHelper.setVote('vote/', point)
         let intervalId = setInterval(this.getVotes, 1000);
         this.setState({
-            infoText: value + ' Voted',
-            intervalId
+            intervalId,
+            point
         })
     }
 
@@ -149,7 +150,8 @@ class ScrumMaster extends React.Component {
             infoText,
             votes,
             isShowVote,
-            isStopVoting
+            isStopVoting,
+            point
         } = this.state
         return (
             <div className="scrum-master">
@@ -159,10 +161,11 @@ class ScrumMaster extends React.Component {
                     <Col span={8}>
                         <StoryListTable storyList={storyList} columns={ScrumTableColumns} />
                     </Col>
-                    <Col span={8}>
+                    <Col span={8} className="active-story">
                         <ActiveStory
                             handleVote={this.handleVote}
                             activeStory={activeStory}
+                            point={point}
                         />
                     </Col>
                     <Col span={8}>

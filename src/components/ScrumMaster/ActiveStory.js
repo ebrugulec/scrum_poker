@@ -3,7 +3,7 @@ import { Button } from 'antd'
 import { StoryPoints } from '../../constants/ScrumConstants'
 
 const ActiveStory = (props) => {
-    const { handleVote, activeStory } = props
+    const { handleVote, activeStory, point } = props
     return (
         <>
             <div>
@@ -15,6 +15,11 @@ const ActiveStory = (props) => {
                     return <Button className="point_button" onClick={() => handleVote(point)}>{point}</Button>
                 })}
             </div>
+            <span className="point">
+                {
+                    point !== null ? <span>{point} Voted!</span> : 'Not Voted!'
+                }
+            </span>
         </>
     )
 }
