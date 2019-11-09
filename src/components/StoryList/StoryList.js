@@ -7,7 +7,7 @@ import { Input } from 'antd';
 import * as routes from '../../routes/routes'
 import { Row, Col } from 'antd';
 import Header from '../Layout/Header'
-import ViewButton from '../View/ViewButton'
+import ViewButton from '../ViewElements/ViewButton'
 
 import './StoryList.scss'
 

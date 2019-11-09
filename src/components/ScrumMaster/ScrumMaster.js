@@ -2,13 +2,13 @@ import React from "react";
 import * as firebase from 'firebase'
 import { Divider, Tag, Row, Col, Button } from 'antd';
 import Header from '../Layout/Header'
-import ViewButton from '../View/ViewButton'
+import ViewButton from '../ViewElements/ViewButton'
 import Voters from './Voters'
 import ActiveStory from './ActiveStory'
 import FirebaseHelper from '../../Firebase/FirebaseHelper'
-import StoryListTable from '../View/StoryListTable'
+import StoryListTable from '../ViewElements/StoryListTable'
 import { ScrumTableColumns } from '../../constants/TableColumns'
-import DeveloperLink from '../View/DeveloperLink'
+import DeveloperLink from '../ViewElements/DeveloperLink'
 import './ScrumMaster.scss'
 
 //TODO: Add Initial Values
