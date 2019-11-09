@@ -2,7 +2,7 @@
 
 ![Scrum Poker](https://github.com/ebrugulec/scrum_poker/blob/master/scrum_poker.gif)
 
-## Installiation :pencil:
+## Installiation :rocket:
 
 ```bash
 $ git clone git@github.com:ebrugulec/scrum_poker.git
@@ -31,3 +31,9 @@ $ npm start
    or
 $ yarn start
 ```
+# TODO :page_with_curl:
+
+* Dockerize Project
+* Write Test
+* Error Handling
+* Add Comment Explanation to Components and Functions
