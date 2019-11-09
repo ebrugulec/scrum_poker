@@ -23,10 +23,22 @@ const resetVote = async (path) => {
     return data
 }
 
+const updateScrum = (path, values) => {
+    firebase.database().ref(path).update({
+        storyList: values,
+    }).then((data)=>{
+        return data
+    }).catch((error)=>{
+        //TODO: Error Handling
+        console.log('error', error)
+    })
+}
+
 const FirebaseHelper = {
     setFirebase,
     setVote,
-    resetVote
+    resetVote,
+    updateScrum
 }
 
 export default FirebaseHelper

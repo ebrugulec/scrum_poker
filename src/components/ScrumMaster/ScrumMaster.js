@@ -38,7 +38,6 @@ class ScrumMaster extends React.Component {
             return snapshot
         })
         const scrum = snapshot.val()
-
         let activeStory = scrum.storyList.filter((story) => {
             return story.status !== 'Not Voted'
         })
@@ -58,13 +57,11 @@ class ScrumMaster extends React.Component {
 
     handleVote = (value) => {
         const data = FirebaseHelper.setVote('vote/', value)
-
         let intervalId = setInterval(this.getVotes, 1000);
         this.setState({
             infoText: value + ' Voted',
             intervalId
         })
-       
     }
 
     getVotes = async () => {
@@ -111,37 +108,34 @@ class ScrumMaster extends React.Component {
         })
     }
 
-    saveFinalScore = () => {
-        //TODO: Remove vote table from firebase
-        const { storyList, finalScore } = this.state
-        let newStoryList = storyList
+    changeTableStatus = (storyList, finalScore) => {
         for (let i in storyList) {
-            if (newStoryList[i].status === 'Active') {
-                newStoryList[i].status = 'Voted'
-                newStoryList[i].story_point = finalScore
+            if (storyList[i].status === 'Active') {
+                storyList[i].status = 'Voted'
+                storyList[i].story_point = finalScore
                 var nextActiveIndex = Number(i)+1
             }
         }
-        if (newStoryList[nextActiveIndex] !== undefined) {
-            newStoryList[nextActiveIndex].status = 'Active'
-        } 
+        if (storyList[nextActiveIndex] !== undefined) {
+            storyList[nextActiveIndex].status = 'Active'
+        }
+        return storyList
+    }
 
-        firebase.database().ref('scrum/').update({
-            storyList: newStoryList,
-        }).then((data)=>{
-            this.setState({
-                isShowVote: false,
-                storyList: newStoryList,
-                votersCount: 0,
-                votes: [],
-                isStopVoting: false
-            })
-        }).catch((error)=>{
-            //error callback
-        })
-        //TODO: Burayi degistir
+    saveFinalScore = () => {
+        const { storyList, finalScore } = this.state
+        let newStoryList = this.changeTableStatus(storyList, finalScore)
 
+        FirebaseHelper.updateScrum('scrum/', newStoryList)
         FirebaseHelper.resetVote('vote/')
+
+        this.setState({
+            isShowVote: false,
+            storyList: newStoryList,
+            votersCount: 0,
+            votes: [],
+            isStopVoting: false
+        })
 
         this.getScrumValues()
     }
