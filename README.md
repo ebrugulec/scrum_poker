@@ -37,3 +37,4 @@ $ yarn start
 * Write Test
 * Error Handling
 * Add Comment Explanation to Components and Functions
+* Add Placeholher
