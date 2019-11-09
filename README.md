@@ -2,7 +2,7 @@
 
 ![Scrum Poker](https://github.com/ebrugulec/scrum_poker/blob/master/scrum_poker.gif)
 
-## Installiation :rocket:
+## Installation :rocket:
 
 ```bash
 $ git clone git@github.com:ebrugulec/scrum_poker.git
