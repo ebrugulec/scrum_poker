@@ -1,6 +1,6 @@
 import React from "react";
 import * as firebase from 'firebase'
-import { Divider, Tag, Row, Col, Button } from 'antd';
+import { Row, Col, Button } from 'antd';
 import Header from '../Layout/Header'
 import ViewButton from '../ViewElements/ViewButton'
 import Voters from './Voters'
@@ -40,10 +40,9 @@ class ScrumMaster extends React.Component {
         })
         const scrum = snapshot.val()
         let activeStory = scrum.storyList.filter((story) => {
-            return story.status !== 'Not Voted'
+            return story.status == 'Active'
         })
-
-        var intervalId = setInterval(this.getVotes, 1000);
+        let intervalId = setInterval(this.getVotes, 1000);
         this.setState({
             storyList: scrum.storyList,
             activeStory: activeStory[0],
