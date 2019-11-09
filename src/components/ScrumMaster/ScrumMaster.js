@@ -2,13 +2,13 @@ import React from "react";
 import * as firebase from 'firebase'
 import { Row, Col, Button } from 'antd';
 import Header from '../Layout/Header'
-import ViewButton from '../ViewElements/ViewButton'
 import Voters from './Voters'
 import ActiveStory from '../ViewElements/ActiveStory'
 import FirebaseHelper from '../../Firebase/FirebaseHelper'
 import StoryListTable from '../ViewElements/StoryListTable'
 import { ScrumTableColumns } from '../../constants/ScrumConstants'
 import DeveloperLink from '../ViewElements/DeveloperLink'
+import PanelButtons from './PanelButtons'
 import './ScrumMaster.scss'
 
 //TODO: Add Initial Values
@@ -173,32 +173,17 @@ class ScrumMaster extends React.Component {
                         <div>
                             Scrum Master Panel
                             <Voters
-                                //TODO: Make different component
                                 votersCount={votersCount}
                                 votes={votes}
                                 isShowVote={isShowVote}
                             />
                         </div>
-                        {
-                            isStopVoting ?
-                            <div>
-                                <input onChange={(e) => this.handleFinalScore(e.target.value)}></input>
-                                <br/><br/>
-                                <ViewButton
-                                    text="Save Final Score"
-                                    className=""
-                                    type="danger"
-                                    onClick={this.saveFinalScore}
-                                />
-                            </div>
-                            :
-                            <ViewButton
-                                text="End Voting"
-                                className=""
-                                type="danger"
-                                onClick={this.endVoting}
-                            />
-                        }
+                        <PanelButtons
+                            isStopVoting={isStopVoting}
+                            handleFinalScore={this.handleFinalScore}
+                            saveFinalScore={this.saveFinalScore}
+                            endVoting={this.endVoting}
+                        />
                     </Col>
                 </Row>
             </div>

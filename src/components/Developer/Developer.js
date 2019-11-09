@@ -60,8 +60,8 @@ class Developer extends React.Component {
                 point
             })
             let newVoter = {
-            [vote_count]: point,
-            ...snapshot.val()
+                [vote_count]: point,
+                ...snapshot.val()
             }
             this.saveDevVote(newVoter)
         }
@@ -92,7 +92,6 @@ class Developer extends React.Component {
 
     render() {
         const { sessionName, numberVoters, storyList, activeStory, votersCount, point } = this.state
-        console.log('point', point)
         return (
             <div className="developer">
                 <Header />
