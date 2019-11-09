@@ -25,15 +25,9 @@ class StoryList extends React.Component {
         }
     }
 
-    handleChangeName (value) {
+    handleChangeValue (event) {
         this.setState({
-            sessionName: value
-        })
-    }
-
-    handleChangeVoters (value) {
-        this.setState({
-            votersCount: value
+            [event.target.name]: event.target.value
         })
     }
 
@@ -57,7 +51,6 @@ class StoryList extends React.Component {
     }
 
     startSession = () => {
-        console.log('Start Session')
         const { sessionName, votersCount, storyList, storyValue } = this.state
         const data = FireBaseHelper.setFirebase('scrum/',
             {
@@ -75,6 +68,7 @@ class StoryList extends React.Component {
         if (isSaved) {
             return <Redirect to={routes.SCRUM_MASTER}/>
         }
+        //TOTO: Seperate Input Elements To Component
         return (
             <div className="story-list">
                 <Row>
@@ -86,7 +80,8 @@ class StoryList extends React.Component {
                         <Input
                             type="text"
                             value={sessionName}
-                            onChange={e => this.handleChangeName(e.target.value)}
+                            name="sessionName"
+                            onChange={e => this.handleChangeValue(e)}
                         />
                     </Col>
                     <Col span={12}>
@@ -94,7 +89,8 @@ class StoryList extends React.Component {
                         <Input
                             type="number"
                             value={votersCount}
-                            onChange={e => this.handleChangeVoters(e.target.value)}
+                            name="votersCount"
+                            onChange={e => this.handleChangeValue(e)}
                             className="voter-counts"
                         />
                     </Col>

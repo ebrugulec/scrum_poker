@@ -1,11 +1,14 @@
 import React from "react";
 import * as firebase from 'firebase'
-import { Table, Divider, Tag, Row, Col, Button } from 'antd';
+import { Divider, Tag, Row, Col, Button } from 'antd';
 import Header from '../Layout/Header'
 import ViewButton from '../View/ViewButton'
+import Voters from './Voters'
+import ActiveStory from './ActiveStory'
+import FirebaseHelper from '../../Firebase/FirebaseHelper'
+import StoryListTable from '../View/StoryListTable'
+import {ScrumTableColumns} from '../../constants/TableColumns'
 import './ScrumMaster.scss'
-
-const STORY_POINTS = [1,2,3,5,8,21,34,55,89,134, '?']
 
 //TODO: Add Initial Values
 class ScrumMaster extends React.Component {
@@ -40,14 +43,14 @@ class ScrumMaster extends React.Component {
             return story.status !== 'Not Voted'
         })
 
+        var intervalId = setInterval(this.getVotes, 1000);
+        console.log('interval cagirma')
         this.setState({
             storyList: scrum.storyList,
             activeStory: activeStory[0],
-            votersCount: scrum.votersCount
+            votersCount: scrum.votersCount,
+            intervalId
         })
-
-        var intervalId = setInterval(this.getVotes, 1000);
-        this.setState({intervalId: intervalId});
     }
 
     componentWillUnmount () {
@@ -55,18 +58,14 @@ class ScrumMaster extends React.Component {
      }
 
     handleVote = (value) => {
-        firebase.database().ref('vote/').set({
-            sc_master: value
-        }).then((data) => {
-            var intervalId = setInterval(this.getVotes, 1000);
-            this.setState({
-                infoText: value + ' Voted',
-                intervalId
-            })
-        this.setState({intervalId: intervalId});
-        }).catch((error)=>{
-            console.log('error ' , error)
+        const data = FirebaseHelper.setVote('vote/', value)
+
+        let intervalId = setInterval(this.getVotes, 1000);
+        this.setState({
+            infoText: value + ' Voted',
+            intervalId
         })
+       
     }
 
     getVotes = async () => {
@@ -78,7 +77,6 @@ class ScrumMaster extends React.Component {
         if (snapshot.val() !== null) {
             const vote_count = Object.keys(snapshot.val()).length
 
-            //TODO: type check (===)
             if (vote_count == votersCount) {
                 clearInterval(this.state.intervalId)
             }
@@ -106,34 +104,6 @@ class ScrumMaster extends React.Component {
         } else {
             alert('Please wait')
         }
-        
-    }
-
-    renderVoters = () => {
-        const { votersCount, votes, isShowVote } = this.state
-        const voters = [];
-
-        if (isShowVote && votes !== []) {
-            for (let i = 1; i < votersCount; i++) {
-                voters.push(<div>
-                                <span className="voter-name">Voter {i}: </span>
-                                <span>{votes[i]}</span>
-                            </div>);
-            }
-            voters.push(<div><span>ScrumMaster: {votes.sc_master}</span></div>)
-            
-        } else {
-            for (let i = 1; i < votersCount; i++) {
-                voters.push(<div>
-                                <span className="voter-name">Voter {i}: </span>
-                                <span>
-                                    {votes[i] !== undefined ? 'Voted' : 'Not Voted'}
-                                </span>
-                            </div>)
-            }
-            voters.push(<div><span>ScrumMaster: {votes.sc_master !== undefined ? 'Voted': 'Not Voted'}</span></div>)
-        }
-        return voters
     }
 
     handleFinalScore = (value) => {
@@ -172,11 +142,8 @@ class ScrumMaster extends React.Component {
         })
         //TODO: Burayi degistir
 
-        firebase.database().ref('vote/').set({
-        }).then((data) => {
-            
-        }).catch((error)=>{
-        })
+        FirebaseHelper.resetVote('vote/')
+
         this.callFunction()
     }
     render() {
@@ -191,51 +158,28 @@ class ScrumMaster extends React.Component {
             isShowVote,
             isStopVoting
         } = this.state
-
-        const columns = [
-            {
-                title: 'Story',
-                dataIndex: 'story_name',
-                key: 'story_name',
-            },
-            {
-                title: 'Story Point',
-                dataIndex: 'story_point',
-                key: 'story_point',
-            },
-            {
-                title: 'Status',
-                dataIndex: 'status',
-                key: 'status',
-            },
-        ]
-        const dataSource = []
-        console.log('storyList', storyList)
         return (
             <div className="scrum-master">
                 <Header />
                 <Row>
                     <Col span={8}>
-                        <span>
-                            Story List
-                        </span>
-                        <Table dataSource={storyList} columns={columns} />
+                        <StoryListTable storyList={storyList} columns={ScrumTableColumns} />
                     </Col>
                     <Col span={8}>
-                        <div>
-                            <span>Active Story: </span>
-                           <span>{activeStory.story_name}</span>
-                        </div>
-                        <div className="scrum-master__points">
-                            {STORY_POINTS.map(point => {
-                                return <Button className="point_button" onClick={() => this.handleVote(point)}>{point}</Button>
-                            })}
-                        </div>
+                        <ActiveStory
+                            handleVote={this.handleVote}
+                            activeStory={activeStory}
+                        />
                     </Col>
                     <Col span={8}>
                         <div>
                             Scrum Master Panel
-                            {this.renderVoters()}
+                            <Voters
+                                //TODO: Make different component
+                                votersCount={votersCount}
+                                votes={votes}
+                                isShowVote={isShowVote}
+                            />
                         </div>
                         {
                             isStopVoting ?

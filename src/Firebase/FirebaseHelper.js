@@ -8,8 +8,25 @@ const setFirebase = (path, values) => {
     })
 }
 
+const setVote = (path, value) => {
+    firebase.database().ref(path).set({
+        sc_master: value
+    }).then((data) => {
+        return data
+    }).catch((error)=>{
+        console.log('error ' , error)
+    })
+}
+
+const resetVote = async (path) => {
+    const data = await firebase.database().ref(path).set({})
+    return data
+}
+
 const FirebaseHelper = {
-    setFirebase
+    setFirebase,
+    setVote,
+    resetVote
 }
 
 export default FirebaseHelper
