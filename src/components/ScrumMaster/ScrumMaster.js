@@ -1,6 +1,6 @@
 import React from "react";
 import * as firebase from 'firebase'
-import { Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import Header from '../Layout/Header'
 import Voters from './Voters'
 import ActiveStory from '../ViewElements/ActiveStory'
@@ -57,7 +57,7 @@ class ScrumMaster extends React.Component {
     }
 
     handleVote = (point) => {
-        const data = FirebaseHelper.setVote('vote/', point)
+        FirebaseHelper.setVote('vote/', point)
         let intervalId = setInterval(this.getVotes, 2000);
         this.setState({
             intervalId,
@@ -73,7 +73,7 @@ class ScrumMaster extends React.Component {
 
         if (snapshot.val() !== null) {
             const vote_count = Object.keys(snapshot.val()).length
-
+            //TODO: Type check
             if (vote_count == votersCount) {
                 clearInterval(this.state.intervalId)
             }
@@ -143,12 +143,9 @@ class ScrumMaster extends React.Component {
     }
     render() {
         const {
-            sessionName,
-            numberVoters,
             storyList,
             activeStory,
             votersCount,
-            infoText,
             votes,
             isShowVote,
             isStopVoting,

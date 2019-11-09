@@ -5,7 +5,6 @@ import { Row, Col } from 'antd';
 import Header from '../Layout/Header'
 import { ScrumTableColumns } from '../../constants/ScrumConstants'
 import ActiveStory from '../ViewElements/ActiveStory'
-import FirebaseHelper from '../../Firebase/FirebaseHelper'
 import helpers from '../../helpers'
 import './Developer.scss'
 
@@ -91,7 +90,7 @@ class Developer extends React.Component {
     }
 
     render() {
-        const { sessionName, numberVoters, storyList, activeStory, votersCount, point } = this.state
+        const { storyList, activeStory, point } = this.state
         return (
             <div className="developer">
                 <Header />

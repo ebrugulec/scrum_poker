@@ -47,7 +47,6 @@ class StoryList extends React.Component {
     }
 
     handleChangeStoryList (value) {
-        const { votersCount } = this.state
         const newStoryList = value.split('\n')
 
         const returnStories = newStoryList.map((story, i) => {
@@ -66,15 +65,15 @@ class StoryList extends React.Component {
     }
 
     startSession = () => {
-        const { sessionName, votersCount, storyList, storyValue } = this.state
+        const { sessionName, votersCount, storyList } = this.state
         if (helpers.checkVoterValue(votersCount)) {
-            const data = FireBaseHelper.setFirebase('scrum/',
+            FireBaseHelper.setFirebase('scrum/',
             {
                 sessionName,
                 votersCount,
                 storyList
             })
-        
+
             this.setState({
                 isSaved: true,
                 error: null
@@ -86,12 +85,17 @@ class StoryList extends React.Component {
         }
     }
     render() {
-        const { sessionName, votersCount, storyList, storyValue, isSaved, error } = this.state
+        const {
+            sessionName,
+            votersCount,
+            storyValue,
+            isSaved,
+            error
+        } = this.state
 
         if (isSaved) {
             return <Redirect to={routes.SCRUM_MASTER}/>
         }
-        //TOTO: Seperate Input Elements To Component
         return (
             <div className="story-list">
                 <Row>

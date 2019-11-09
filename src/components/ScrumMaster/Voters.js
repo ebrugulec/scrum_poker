@@ -1,5 +1,4 @@
 import React from 'react'
-import { Button } from 'antd'
 
 const Voters = (props) => {
     const { votersCount, votes, isShowVote } = props
@@ -12,7 +11,7 @@ const Voters = (props) => {
                     <span>{votes[i]}</span>
                 </div>)
         }
-        voters.push(<div><span>ScrumMaster: {votes.sc_master}</span></div>)      
+        voters.push(<div><span>ScrumMaster: {votes.sc_master}</span></div>)
     } else {
         for (let i = 1; i < votersCount; i++) {
             voters.push(

@@ -3,7 +3,6 @@ import {
   BrowserRouter,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import StoryList from '../src/components/StoryList/StoryList'
 import Developer from '../src/components/Developer/Developer'
