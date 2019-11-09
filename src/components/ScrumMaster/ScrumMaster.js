@@ -4,7 +4,7 @@ import { Row, Col, Button } from 'antd';
 import Header from '../Layout/Header'
 import ViewButton from '../ViewElements/ViewButton'
 import Voters from './Voters'
-import ActiveStory from './ActiveStory'
+import ActiveStory from '../ViewElements/ActiveStory'
 import FirebaseHelper from '../../Firebase/FirebaseHelper'
 import StoryListTable from '../ViewElements/StoryListTable'
 import { ScrumTableColumns } from '../../constants/ScrumConstants'
@@ -43,7 +43,7 @@ class ScrumMaster extends React.Component {
         let activeStory = scrum.storyList.filter((story) => {
             return story.status == 'Active'
         })
-        let intervalId = setInterval(this.getVotes, 1000);
+        let intervalId = setInterval(this.getVotes, 2000);
         this.setState({
             storyList: scrum.storyList,
             activeStory: activeStory[0],
@@ -58,7 +58,7 @@ class ScrumMaster extends React.Component {
 
     handleVote = (point) => {
         const data = FirebaseHelper.setVote('vote/', point)
-        let intervalId = setInterval(this.getVotes, 1000);
+        let intervalId = setInterval(this.getVotes, 2000);
         this.setState({
             intervalId,
             point

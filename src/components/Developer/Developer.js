@@ -4,7 +4,7 @@ import * as firebase from 'firebase'
 import { Row, Col } from 'antd';
 import Header from '../Layout/Header'
 import { ScrumTableColumns } from '../../constants/ScrumConstants'
-import ActiveStory from '../ScrumMaster/ActiveStory'
+import ActiveStory from '../ViewElements/ActiveStory'
 import FirebaseHelper from '../../Firebase/FirebaseHelper'
 import helpers from '../../helpers'
 import './Developer.scss'

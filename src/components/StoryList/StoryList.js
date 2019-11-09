@@ -8,6 +8,7 @@ import * as routes from '../../routes/routes'
 import { Row, Col } from 'antd';
 import Header from '../Layout/Header'
 import ViewButton from '../ViewElements/ViewButton'
+import helpers from '../../helpers'
 
 import './StoryList.scss'
 
@@ -21,13 +22,27 @@ class StoryList extends React.Component {
             votersCount: 1,
             storyList: [],
             storyValue: '',
-            isSaved: false
+            isSaved: false,
+            error: null
         }
     }
 
-    handleChangeValue (event) {
+    handleNameValue (value) {
+        if (value.length <= 200) {
+            this.setState({
+                sessionName: value,
+                error: null
+            })
+        } else {
+            this.setState({
+                error: 'Session Name must be less then 200 character'
+            })
+        }
+    }
+
+    handleVoterValue (value) {
         this.setState({
-            [event.target.name]: event.target.value
+            votersCount: value
         })
     }
 
@@ -52,18 +67,26 @@ class StoryList extends React.Component {
 
     startSession = () => {
         const { sessionName, votersCount, storyList, storyValue } = this.state
-        const data = FireBaseHelper.setFirebase('scrum/',
+        if (helpers.checkVoterValue(votersCount)) {
+            const data = FireBaseHelper.setFirebase('scrum/',
             {
                 sessionName,
                 votersCount,
                 storyList
             })
-        this.setState({
-            isSaved: true
-        })
+        
+            this.setState({
+                isSaved: true,
+                error: null
+            })
+        } else {
+            this.setState({
+                error: 'Something went wrong. Check your values.'
+            })
+        }
     }
     render() {
-        const { sessionName, votersCount, storyList, storyValue, isSaved } = this.state
+        const { sessionName, votersCount, storyList, storyValue, isSaved, error } = this.state
 
         if (isSaved) {
             return <Redirect to={routes.SCRUM_MASTER}/>
@@ -81,7 +104,7 @@ class StoryList extends React.Component {
                             type="text"
                             value={sessionName}
                             name="sessionName"
-                            onChange={e => this.handleChangeValue(e)}
+                            onChange={e => this.handleNameValue(e.target.value)}
                         />
                     </Col>
                     <Col span={12}>
@@ -90,8 +113,9 @@ class StoryList extends React.Component {
                             type="number"
                             value={votersCount}
                             name="votersCount"
-                            onChange={e => this.handleChangeValue(e)}
+                            onChange={e => this.handleVoterValue(e.target.value)}
                             className="voter-counts"
+                            min="1"
                         />
                     </Col>
                 </Row>
@@ -109,6 +133,9 @@ class StoryList extends React.Component {
                         onClick={this.startSession}
                     />
                 </div>
+                {
+                    error !== null ? <span>{error}</span> : ""
+                }
             </div>
         )
     }
