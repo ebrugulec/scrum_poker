@@ -7,6 +7,7 @@ import { ScrumTableColumns } from '../../constants/ScrumConstants'
 import ActiveStory from '../ScrumMaster/ActiveStory'
 import './Developer.scss'
 
+//TODO: Add Initial Value
 class Developer extends React.Component {
     constructor() {
         super();
@@ -14,6 +15,7 @@ class Developer extends React.Component {
             sessionName: '',
             numberVoters: 0,
             storyList: [],
+            votersCount: 0,
             activeStory: []
         }
     }
@@ -29,13 +31,36 @@ class Developer extends React.Component {
         })
         const scrum = snapshot.val()
         this.setState({
-            storyList: scrum.storyList
+            storyList: scrum.storyList,
+            votersCount: scrum.votersCount
         })
         console.log('scrum', scrum)
     }
 
-    handleVote = () => {
+    handleVote = async (point) => {
+        const { votersCount } = this.state
+        const snapshot = await firebase.database().ref('vote/').once('value', (snapshot) => {
+            return snapshot
+        })
 
+        // firebase.database().ref('votes/').on('value', function(point)
+        // {
+        // 2   = 'a';
+        // });
+        // // this.setState({
+        // //     isShowVote: true,
+        // //     isStopVoting: true,
+        // //     votersCount: vote_count+1
+        // // })
+
+        // console.log('pointt',point )
+
+        const vote_count = Object.keys(snapshot.val()).length
+        if ((votersCount <= vote_count) && vote_count !== undefined) {
+            
+        } else {
+            alert('Noooo')
+        }
     }
 
     getVoters = async () => {
